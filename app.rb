@@ -3,7 +3,6 @@ require 'sinatra'
 require 'haml'
 require 'linkedin'
 require 'yaml'
-require 'sqlite3'
 
 CONFIG = YAML.load_file 'config.yml'
 api_key = CONFIG['api_key']
