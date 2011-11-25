@@ -12,7 +12,7 @@ enable :sessions
 
 get '/' do
   client = LinkedIn::Client.new(api_key, secret_key)
-  rtoken = client.request_token(:oauth_callback => "/name")
+  rtoken = client.request_token(:oauth_callback => "http://nametheface.heroku.com/name")
   rsecret = rtoken.secret
   session[:rtoken] = rtoken
   session[:rsecret] = rsecret
@@ -21,10 +21,11 @@ get '/' do
 end 
 
 get '/name' do
-  #client.authorize_from_request(params['oauth_secret'], client.request_token.secret, params['oauth_verifier'])
   pin = params['oauth_verifier']
   client = LinkedIn::Client.new(api_key, secret_key)
   credentials = client.authorize_from_request(params['oauth_token'], session[:rsecret], pin)
   session[:credentials] = credentials
-  client.connections['all'][10]
+  #client.connections['all'][10]
+  client.connections
+
 end
