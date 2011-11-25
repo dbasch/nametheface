@@ -2,16 +2,22 @@
   %head
     %script 
       function showStuff(id) { document.getElementById(id).style.display = 'block';}
-  %body
-  %h1 Can you name this person?
-  %img{ :src => "#{@c[:picture_url]}"}
-
+  %body{:style => "font-family: helvetica;"}
+  %h1 Can you name this connection?
+  %table
+    %tr
+      %td
+        %img{ :src => "#{@c[:picture_url]}", :width => "200", :height => "200"}
+      %td
+        %span{ :id=>:name, :style => "display: none	;" }
+          %b 
+            #{@c[:first_name]} #{@c[:last_name]}     
   %p
     %a{ :href => "#", :onclick => "showStuff('name'); return false;"}
       I give up!
 
-  %span{ :id=>:name, :style => "display: none	;" }
-    #{@c[:first_name]} #{@c[:last_name]}
+  
+   
   %form{:action => '/'}
-    %input{:type => :submit, :value => "Show me another face"}
+    %input{:type => :submit, :value => "Show me another LinkedIn connection", :style => "font-size:2em;"}
   
