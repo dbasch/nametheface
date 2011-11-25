@@ -35,5 +35,6 @@ get '/authorize' do
   client = LinkedIn::Client.new(api_key, secret_key)
   credentials = client.authorize_from_request(params[:oauth_token], session[:rsecret], pin)
   session[:credentials] = credentials
+  redirect '/'
 end
 
