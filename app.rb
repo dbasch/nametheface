@@ -26,6 +26,6 @@ get '/name' do
   credentials = client.authorize_from_request(params['oauth_token'], session[:rsecret], pin)
   session[:credentials] = credentials
   #client.connections['all'][10]
-  client.connections
-
+  conns = client.connections
+  conns['all'][rand(cons['total'])]
 end
