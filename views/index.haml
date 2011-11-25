@@ -1,2 +1,17 @@
 %html
-%oauth_register_button :value => "Register with LinkedIn", :class => 'linkedin' %
+  %head
+    %script 
+      function showStuff(id) { document.getElementById(id).style.display = 'block';}
+  %body
+  %h1 Can you name this person?
+  %img{ :src => "#{@c[:picture_url]}"}
+
+  %p
+    %a{ :href => "#", :onclick => "showStuff('name'); return false;"}
+      I give up!
+
+  %span{ :id=>:name, :style => "display: none	;" }
+    #{@c[:first_name]} #{@c[:last_name]}
+  %form{:action => '/'}
+    %input{:type => :submit, :value => "Show me another face"}
+  
