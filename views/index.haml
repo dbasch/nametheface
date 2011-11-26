@@ -7,11 +7,13 @@
   %table
     %tr
       %td
-        %img{ :src => "#{@pic[:picture_url]}", :width => "200", :height => "200"}
+        %img{ :src => "#{@person[:picture_url]}", :width => "200", :height => "200"}
       %td
         %span{ :id=>:name, :style => "display: none	;" }
           %b 
-            #{@pic[:first_name]} #{@pic[:last_name]}     
+            %a{ :href => "#{@person[:url]}"}
+              #{@person[:first_name]} #{@person[:last_name]}
+                 
   %p
     %a{ :href => "#", :onclick => "showStuff('name'); return false;"}
       I give up!

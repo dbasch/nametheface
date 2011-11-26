@@ -4,12 +4,15 @@ require 'haml'
 require 'linkedin'
 require 'yaml'
 
+#get your application key and secret at http://developer.linkedin.com
+#and edit config.yml accordingly
 CONFIG = YAML.load_file 'config.yml'
 api_key = CONFIG['api_key']
 secret_key = CONFIG['secret_key']
+#this is where the app lives, e.g. "http://localhost:4567"
 app_url = CONFIG['app_url']
 
-enable :sessions
+use Rack::Session::Pool
 
 get '/' do
   client = LinkedIn::Client.new(api_key, secret_key)
@@ -20,20 +23,25 @@ get '/' do
     session[:rsecret] = rsecret
     redirect rtoken.authorize_url
   end
-  @pics = session[:pics]
-  if @pics == nil
-    @pics = []
+  people = session[:people]
+  if people == nil
+    people = []
     client.authorize_from_access(session[:credentials][0], session[:credentials][1])
     conns = client.connections
     conns[:all].each do |conn| 
-      if conn[:picture_url] != nil
-        @pics << {:first_name => conn[:first_name], :last_name => conn[:last_name], :picture_url => conn[:picture_url]} 
+      if conn[:picture_url] != nil and conn[:site_standard_profile_request] != nil
+        people << {:first_name => conn[:first_name], :last_name => conn[:last_name], 
+          :picture_url => conn[:picture_url], :url => conn[:site_standard_profile_request].url } 
       end  
     end
-    session[:pics] = @pics
+    session[:people] = people
   end
-  @pic= @pics[rand(@pics.size)]
-  haml :index  
+  if people.size > 0 
+    @person= people[rand(people.size)]
+    haml :index
+  else
+    "None of your contacts have pictures. Grow your network and come back!"
+  end 
 end 
 
 get '/authorize' do
