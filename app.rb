@@ -25,6 +25,7 @@ get '/' do
   end
   people = session[:people]
   if people == nil
+    #fetch the user's connections through the LinkedIn API
     people = []
     client.authorize_from_access(session[:credentials][0], session[:credentials][1])
     conns = client.connections
@@ -48,6 +49,7 @@ get '/authorize' do
   pin = params[:oauth_verifier]
   client = LinkedIn::Client.new(api_key, secret_key)
   credentials = client.authorize_from_request(params[:oauth_token], session[:rsecret], pin)
+  #we should be persisting the credentials instead of lazily stuffing them into the session
   session[:credentials] = credentials
   redirect '/'
 end
